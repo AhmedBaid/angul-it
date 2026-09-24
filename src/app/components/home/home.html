@@ -1,1 +1,37 @@
-<p>hello home</p>
+<main class="card">
+  <div class="logo" aria-hidden="true">A</div>
+  <h1>Angul-It</h1>
+  <p class="subtitle">
+    An interactive multi-stage CAPTCHA experience. Prove you're human by
+    solving a series of visual and logical challenges — no external libraries, just pure logic.
+  </p>
+
+  <div class="progress" role="img" aria-label="5 challenges ahead, none completed yet">
+    <span class="dot"></span>
+    <span class="dot"></span>
+    <span class="dot"></span>
+    <span class="dot"></span>
+    <span class="dot"></span>
+  </div>
+
+  <div class="badge">
+    <span class="num">5</span>
+    Challenges to complete
+  </div>
+
+  <div class="info">
+    <strong>How it works</strong>
+    <ul>
+      <li>Go through 5 different verification stages</li>
+      <li>Mix of image selection, small puzzles, and text input</li>
+      <li>Your progress is saved automatically as you go</li>
+      <li>Refresh anytime — you'll resume right where you left off</li>
+    </ul>
+  </div>
+
+  <button class="start-btn" (click)="goToCaptcha()">
+    Begin Challenges
+  </button>
+
+  <footer>Angul-It · Human Verification System Developed By Abaid</footer>
+</main>

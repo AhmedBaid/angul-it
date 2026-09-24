@@ -1,0 +1,36 @@
+  :root {
+    --darkest: #0c2b2e;
+    --teal: #124f4d;
+    --green: #2b8a5e;
+    --light-green: #87b98d;
+    --text-light: #f4faf6;
+    --text-muted: #cfe3d7;
+    --focus-ring: #ffd166;
+    box-sizing: border-box;
+    padding-top: env(safe-area-inset-top, 0px);
+    padding-bottom: env(safe-area-inset-bottom, 0px);
+  }
+
+  * {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+  }
+
+  html {
+    scroll-padding-top: env(safe-area-inset-top, 0px);
+  }
+
+  body {
+    height: 100vh;
+    font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+    background:
+      radial-gradient(circle at 15% 10%, rgba(135, 185, 141, 0.18), transparent 40%),
+      radial-gradient(circle at 85% 90%, rgba(43, 138, 94, 0.22), transparent 45%),
+      linear-gradient(180deg, var(--darkest) 0%, var(--teal) 45%, var(--green) 78%, var(--light-green) 100%);
+    color: var(--text-light);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow-x: hidden;
+  }
