@@ -11,7 +11,7 @@ import { Router } from '@angular/router';
 export class CaptchaComponent {
   router = inject(Router);
   error: string | null = null;
-  challenge: number = 1;
+  challenge: number = 5;
   challengeN1 = '(15×8)−(5²×2)+√400';
   challengeN2 = 'Which country won the 2018 FIFA World Cup ?';
   challengeN3 = 'Which card means a player is sent off ?';
