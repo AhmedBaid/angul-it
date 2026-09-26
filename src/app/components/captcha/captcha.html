@@ -1,1 +1,93 @@
-<p>hello captcha</p>
+@if(challenge==1){
+<form (ngSubmit)="checkAnswer(answer.value,challenge)">
+  <div class="card">
+    <div class="progress">
+      <div class="active">1</div>
+      <div>2</div>
+      <div>3</div>
+      <div>4</div>
+      <div>5</div>
+    </div>
+    <p class="title">challenge 1</p>
+    <p class="question">What is the result of this math operation : </p>{{challengeN1}}
+    <input type="text" name="answer" title="answer" placeholder="put your result here" #answer>
+    <button type="submit">next</button>
+  </div>
+</form>
+}@else if(challenge==2){
+<form action="">
+  <div class="card">
+    <div class="progress">
+      <div>1</div>
+      <div class="active">2</div>
+      <div>3</div>
+      <div>4</div>
+      <div>5</div>
+    </div>
+    <p class="title">challenge 2</p>
+    <p class="question">Answer this question : </p>{{challengeN2}}
+    <input type="text" name="answer" title="answer" placeholder="put your result here" #answer>
+    <button type="button" (click)="goBack()">previos</button>
+    <button type="submit">next</button>
+  </div>
+</form>
+}@else if(challenge==3){
+<form action="">
+  <div class="card">
+    <div class="progress">
+      <div>1</div>
+      <div>2</div>
+      <div class="active">3</div>
+      <div>4</div>
+      <div>5</div>
+    </div>
+    <p class="title">challenge 3</p>
+    <p class="question">Answer this question : </p>{{challengeN3}}
+    <input type="text" name="answer" title="answer" placeholder="put your result here" #answer>
+    <button type="button" (click)="goBack()">previos</button>
+    <button type="submit">next</button>
+  </div>
+</form>
+}@else if(challenge==4){
+<form action="">
+  <div class="card">
+    <div class="progress">
+      <div>1</div>
+      <div>2</div>
+      <div>3</div>
+      <div class="active">4</div>
+      <div>5</div>
+    </div>
+    <p class="title">challenge 4</p>
+    <p class="question">which one is messi</p>
+    <div>
+      @for(ch of challengeN4;track ch){
+      <img [src]="ch" alt="challnge 4 pictures">
+      }
+    </div>
+    <button type="button" (click)="goBack()">previos</button>
+    <button type="submit">next</button>
+  </div>
+</form>
+}@else if(challenge==5){
+<form action="">
+  <div class="card">
+    <div class="progress">
+      <div>1</div>
+      <div>2</div>
+      <div>3</div>
+      <div>4</div>
+      <div class="active">5</div>
+    </div>
+    <p class="title">challenge 5</p>
+    <p class="question">chose just the cats</p>
+    <div>
+      @for(ch of challengeN5;track ch){
+      <img [src]="ch" alt="challnge 4 pictures">
+      }
+    </div>
+    <button type="button" (click)="goBack()">previos</button>
+    <button type="submit">next</button>
+  </div>
+</form>
+}
