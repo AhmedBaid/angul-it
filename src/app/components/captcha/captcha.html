@@ -9,13 +9,16 @@
       <div>5</div>
     </div>
     <p class="title">challenge 1</p>
-    <p class="question">What is the result of this math operation : </p>{{challengeN1}}
+    <p class="question">What is the result of this math operation : <span>{{challengeN1}}</span></p>
     <input type="text" name="answer" title="answer" placeholder="put your result here" #answer>
+    @if(error){
+    <p class="error">{{error}}</p>
+    }
     <button type="submit">next</button>
   </div>
 </form>
 }@else if(challenge==2){
-<form action="">
+<form (ngSubmit)="checkAnswer(answer.value,challenge)">
   <div class="card">
     <div class="progress">
       <div>1</div>
@@ -25,14 +28,17 @@
       <div>5</div>
     </div>
     <p class="title">challenge 2</p>
-    <p class="question">Answer this question : </p>{{challengeN2}}
+    <p class="question">Answer this question : <span>{{challengeN2}}</span></p>
     <input type="text" name="answer" title="answer" placeholder="put your result here" #answer>
+    @if(error){
+    <p class="error">{{error}}</p>
+    }
     <button type="button" (click)="goBack()">previos</button>
     <button type="submit">next</button>
   </div>
 </form>
 }@else if(challenge==3){
-<form action="">
+<form (ngSubmit)="checkAnswer(answer.value,challenge)">
   <div class="card">
     <div class="progress">
       <div>1</div>
@@ -42,14 +48,17 @@
       <div>5</div>
     </div>
     <p class="title">challenge 3</p>
-    <p class="question">Answer this question : </p>{{challengeN3}}
+    <p class="question">Answer this question : <span>{{challengeN3}}</span></p>
     <input type="text" name="answer" title="answer" placeholder="put your result here" #answer>
+    @if(error){
+    <p class="error">{{error}}</p>
+    }
     <button type="button" (click)="goBack()">previos</button>
     <button type="submit">next</button>
   </div>
 </form>
 }@else if(challenge==4){
-<form action="">
+<form (ngSubmit)="checkAnswer('',challenge)">
   <div class="card">
     <div class="progress">
       <div>1</div>
@@ -61,16 +70,20 @@
     <p class="title">challenge 4</p>
     <p class="question">which one is messi</p>
     <div>
-      @for(ch of challengeN4;track ch){
-      <img [src]="ch" alt="challnge 4 pictures">
+      @for(ch of challengeN4; track ch){
+      <img [src]="ch" alt="challenge 4 picture" [class.selected]="selectedImages.includes(ch)"
+        (click)="toggleSelect(ch)">
       }
     </div>
+    @if(error){
+    <p class="error">{{error}}</p>
+    }
     <button type="button" (click)="goBack()">previos</button>
     <button type="submit">next</button>
   </div>
 </form>
 }@else if(challenge==5){
-<form action="">
+<form (ngSubmit)="checkAnswer('',challenge)">
   <div class="card">
     <div class="progress">
       <div>1</div>
@@ -82,10 +95,14 @@
     <p class="title">challenge 5</p>
     <p class="question">chose just the cats</p>
     <div>
-      @for(ch of challengeN5;track ch){
-      <img [src]="ch" alt="challnge 4 pictures">
+      @for(ch of challengeN5; track ch){
+      <img [src]="ch" alt="challenge 5 picture" [class.selected]="selectedImages.includes(ch)"
+        (click)="toggleSelect(ch)">
       }
     </div>
+    @if(error){
+    <p class="error">{{error}}</p>
+    }
     <button type="button" (click)="goBack()">previos</button>
     <button type="submit">next</button>
   </div>

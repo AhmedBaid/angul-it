@@ -1,1 +1,37 @@
-<p>hello result</p>
+<main class="card" role="main">
+  <div class="check" aria-hidden="true">
+    <svg viewBox="0 0 24 24" fill="none" stroke="#0c2b2e" stroke-width="3" stroke-linecap="round"
+      stroke-linejoin="round">
+      <polyline points="20 6 9 17 4 12"></polyline>
+    </svg>
+  </div>
+
+  <h1>You're verified!</h1>
+  <p class="subtitle">
+    Great job — you successfully completed all the CAPTCHA challenges and proved you're human.
+  </p>
+
+  <div class="progress" role="img" aria-label="5 out of 5 challenges completed">
+    <div>1</div>
+    <div>2</div>
+    <div>3</div>
+    <div>4</div>
+    <div>5</div>
+  </div>
+
+  <div class="score">
+    <div class="num">5 / 5</div>
+    <div class="label">Challenges passed</div>
+  </div>
+
+  <button class="retry-btn" (click)="retryChallenge()" aria-label="Restart the challenge">
+    <svg viewBox="0 0 24 24" fill="none" stroke="#0c2b2e" stroke-width="2.5" stroke-linecap="round"
+      stroke-linejoin="round">
+      <polyline points="1 4 1 10 7 10"></polyline>
+      <path d="M3.51 15a9 9 0 1 0 2.13-9.36L1 10"></path>
+    </svg>
+    Retry Challenge
+  </button>
+
+  <footer>Angul-It · Human Verification System Developed By Abaid</footer>
+</main>

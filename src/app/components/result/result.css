@@ -1,0 +1,178 @@
+  .card {
+    width: 100%;
+    max-width: 520px;
+    background: rgba(8, 32, 34, 0.62);
+    border: 1px solid rgba(255, 255, 255, 0.14);
+    border-radius: 22px;
+    padding: 35px 34px;
+    text-align: center;
+    box-shadow: 0 24px 60px rgba(0, 0, 0, 0.4);
+    animation: rise 0.5s ease-out;
+  }
+
+  @keyframes rise {
+    from {
+      opacity: 0;
+      transform: translateY(16px);
+    }
+
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+
+  .check {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 76px;
+    height: 76px;
+    border-radius: 50%;
+    background: var(--light-green);
+    margin-bottom: 22px;
+    animation: pop 0.5s ease-out 0.1s both;
+  }
+
+  .check svg {
+    width: 38px;
+    height: 38px;
+  }
+
+  @keyframes pop {
+    0% {
+      transform: scale(0.5);
+      opacity: 0;
+    }
+
+    100% {
+      transform: scale(1);
+      opacity: 1;
+    }
+  }
+
+  h1 {
+    font-size: 2rem;
+    margin-bottom: 10px;
+    color: #ffffff;
+  }
+
+  .subtitle {
+    color: var(--text-muted);
+    font-size: 1rem;
+    margin-bottom: 26px;
+    line-height: 1.6;
+  }
+
+  .progress {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    margin-bottom: 26px;
+  }
+
+  .progress div {
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 0.85rem;
+    font-weight: 700;
+    background: var(--light-green);
+    color: var(--darkest);
+  }
+
+  .score {
+    background: rgba(255, 255, 255, 0.08);
+    border: 1px solid rgba(255, 255, 255, 0.12);
+    border-radius: 16px;
+    padding: 22px;
+    margin-bottom: 30px;
+  }
+
+  .score .num {
+    font-size: 2.6rem;
+    font-weight: 800;
+    color: var(--light-green);
+    line-height: 1;
+  }
+
+  .score .label {
+    color: var(--text-muted);
+    font-size: 0.9rem;
+    margin-top: 6px;
+  }
+
+  .retry-btn {
+    width: 100%;
+    padding: 18px;
+    font-size: 1.1rem;
+    font-weight: 800;
+    color: var(--darkest);
+    background: var(--light-green);
+    border: none;
+    border-radius: 14px;
+    cursor: pointer;
+    transition: transform 0.15s ease, background 0.2s ease, box-shadow 0.2s ease;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+  }
+
+  .retry-btn svg {
+    width: 20px;
+    height: 20px;
+    transition: transform 0.3s ease;
+  }
+
+  .retry-btn:hover {
+    background: var(--green);
+    box-shadow: 0 10px 26px rgba(0, 0, 0, 0.35);
+    transform: translateY(-3px);
+  }
+
+  .retry-btn:hover svg {
+    transform: rotate(180deg);
+  }
+
+  .retry-btn:active {
+    transform: translateY(0);
+  }
+
+  .retry-btn:focus-visible {
+    outline: 3px solid var(--focus-ring);
+    outline-offset: 3px;
+  }
+
+  footer {
+    margin-top: 24px;
+    font-size: 0.8rem;
+    color: var(--text-muted);
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+
+    .card,
+    .check {
+      animation: none;
+    }
+
+    .retry-btn,
+    .retry-btn svg {
+      transition: none;
+    }
+  }
+
+  @media (max-width:480px) {
+    .card {
+      padding: 34px 22px;
+    }
+
+    h1 {
+      font-size: 1.6rem;
+    }
+  }

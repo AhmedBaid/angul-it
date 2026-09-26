@@ -1,0 +1,231 @@
+
+
+* {
+  box-sizing: border-box;
+}
+
+span {
+  color: var(--green);
+  font-weight: 700;
+}
+
+.card {
+  background: rgba(8, 32, 34, 0.62);
+  border: 1px solid rgba(255, 255, 255, 0.14);
+  border-radius: 22px;
+  padding: 30px ;
+  text-align: center;
+  color: var(--text-light);
+  box-shadow: 0 24px 60px rgba(0, 0, 0, 0.4);
+  animation: rise 0.4s ease-out;
+}
+
+@keyframes rise {
+  from {
+    opacity: 0;
+    transform: translateY(14px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.progress {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  margin-bottom: 26px;
+}
+
+.progress div {
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.85rem;
+  font-weight: 700;
+  background: rgba(255, 255, 255, 0.1);
+  border: 2px solid rgba(255, 255, 255, 0.25);
+  color: var(--text-muted);
+  transition: transform 0.2s ease, background 0.2s ease, color 0.2s ease;
+}
+
+.progress div.active {
+  background: var(--light-green);
+  border-color: var(--light-green);
+  color: var(--darkest);
+  transform: scale(1.12);
+}
+
+.title {
+  font-size: 1.4rem;
+  font-weight: 800;
+  color: #ffffff;
+  margin-bottom: 15px;
+  text-transform: capitalize;
+}
+
+.question {
+  color: var(--text-muted);
+  font-size: 1rem;
+  line-height: 1.6;
+  margin-bottom: 22px;
+}
+
+input[type="text"] {
+  width: 100%;
+  padding: 14px 16px;
+  border-radius: 12px;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  background: rgba(255, 255, 255, 0.08);
+  color: var(--text-light);
+  font-size: 1rem;
+  margin-bottom: 18px;
+  outline: none;
+  transition: border-color 0.2s ease, background 0.2s ease;
+}
+
+input[type="text"]::placeholder {
+  color: rgba(207, 227, 215, 0.6);
+}
+
+
+.card>div{
+  width: 500px;
+}
+.card>div:has(img) {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 12px;
+  margin-bottom: 22px;
+}
+
+.card img {
+  width: 100%;
+  aspect-ratio: 1/1;
+  object-fit: cover;
+  border-radius: 14px;
+  border: 3px solid transparent;
+  cursor: pointer;
+  transition: transform 0.15s ease, border-color 0.2s ease, box-shadow 0.2s ease;
+}
+
+.card img:hover {
+  transform: translateY(-3px) scale(1.02);
+}
+
+
+.card img.selected {
+  border-color: var(--light-green);
+  box-shadow: 0 0 0 3px rgba(135, 185, 141, 0.4);
+}
+
+.card {
+  display: flex;
+  flex-direction: column;
+}
+
+button {
+  padding: 12px;
+  font-size: 1.05rem;
+  font-weight: 800;
+  border: none;
+  border-radius: 14px;
+  cursor: pointer;
+  transition: transform 0.15s ease, background 0.2s ease, box-shadow 0.2s ease;
+}
+
+button[type="submit"] {
+  color: var(--darkest);
+  background: var(--light-green);
+  margin-top: 12px;
+}
+
+button[type="submit"]:hover {
+  background: var(--green);
+  box-shadow: 0 10px 26px rgba(0, 0, 0, 0.35);
+}
+
+button[type="button"] {
+  color: var(--text-light);
+  background: rgba(255, 255, 255, 0.1);
+  border: 1px solid rgba(255, 255, 255, 0.25);
+  margin-bottom: 12px;
+}
+
+button[type="button"]:hover {
+  background: rgba(255, 255, 255, 0.18);
+}
+
+button:active {
+  transform: translateY(0);
+}
+
+button:focus-visible {
+  outline: 3px solid var(--focus-ring);
+  outline-offset: 3px;
+}
+
+.card:has(button[type="button"]) {
+  gap: 0;
+}
+
+.card button[type="button"]+button[type="submit"] {
+  margin-top: 0;
+}
+
+@media (min-width:420px) {
+
+  .card:has(button[type="button"]) form,
+  .card:has(button[type="button"]) {
+    position: relative;
+  }
+}
+
+@media (min-width:380px) {
+  .card>button[type="button"] {
+    display: inline-block;
+  }
+}
+
+@media (max-width:480px) {
+  .card {
+    padding: 30px 20px;
+  }
+
+  .title {
+    font-size: 1.2rem;
+  }
+
+  .card>div:has(img) {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  .progress div {
+    width: 28px;
+    height: 28px;
+    font-size: 0.75rem;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .card {
+    animation: none;
+  }
+
+  button,
+  .card img,
+  .progress div {
+    transition: none;
+  }
+}
+.error {
+  color: var(--green);
+  font-size: 0.9rem;
+  margin-bottom: 12px;
+}
