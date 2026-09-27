@@ -1,5 +1,14 @@
-import { CanActivateFn } from '@angular/router';
+import { inject } from '@angular/core';
+import { CanActivateFn, Router } from '@angular/router';
+import { StateService } from '../service/state.service';
 
 export const resultGuard: CanActivateFn = (route, state) => {
-  return true;
+  const stateService = inject(StateService);
+  const router = inject(Router);
+
+  if (stateService.isAllCompleted()) {
+    return true;
+  }
+
+  return router.createUrlTree(['/captcha']);
 };

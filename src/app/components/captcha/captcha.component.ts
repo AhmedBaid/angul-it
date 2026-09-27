@@ -1,6 +1,7 @@
-import { Component, inject } from '@angular/core';
+import { Component, inject, OnInit } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { Router } from '@angular/router';
+import { StateService } from '../../service/state.service';
 
 @Component({
   selector: 'app-captcha',
@@ -8,10 +9,12 @@ import { Router } from '@angular/router';
   imports: [FormsModule],
   styleUrl: './captcha.css',
 })
-export class CaptchaComponent {
+export class CaptchaComponent implements OnInit {
   router = inject(Router);
+  stateService = inject(StateService);
+
   error: string | null = null;
-  challenge: number = 5;
+  challenge: number = 1;
   challengeN1 = '(15×8)−(5²×2)+√400';
   challengeN2 = 'Which country won the 2018 FIFA World Cup ?';
   challengeN3 = 'Which card means a player is sent off ?';
@@ -37,11 +40,20 @@ export class CaptchaComponent {
   ];
   selectedImages: string[] = [];
 
-  checkAnswer(answer: string, challenge: number) {
+  ngOnInit(): void {
+    this.challenge = this.stateService.getLevel();
+
+    if (this.challenge > 5) {
+      this.router.navigate(['/result']);
+    }
+  }
+
+  checkAnswer(answer: string, challenge: number): void {
     switch (challenge) {
       case 1:
         let answer1: number = parseInt(answer.trim());
         if (answer1 === 100) {
+          this.stateService.completeChallenge(1);
           this.challenge = 2;
           this.error = null;
         } else {
@@ -50,6 +62,7 @@ export class CaptchaComponent {
         break;
       case 2:
         if (answer.trim().toLocaleLowerCase() === 'france') {
+          this.stateService.completeChallenge(2);
           this.challenge = 3;
           this.error = null;
         } else {
@@ -58,6 +71,7 @@ export class CaptchaComponent {
         break;
       case 3:
         if (answer.trim().toLocaleLowerCase() === 'red') {
+          this.stateService.completeChallenge(3);
           this.challenge = 4;
           this.error = null;
         } else {
@@ -69,6 +83,7 @@ export class CaptchaComponent {
           this.selectedImages.includes('../../assets/challenge4/messi7.png') &&
           this.selectedImages.length === 1
         ) {
+          this.stateService.completeChallenge(4);
           this.challenge = 5;
           this.error = null;
         } else {
@@ -81,6 +96,7 @@ export class CaptchaComponent {
           this.selectedImages.includes('../../assets/challenge5/cat6.png') &&
           this.selectedImages.includes('../../assets/challenge5/cat7.png')
         ) {
+          this.stateService.completeChallenge(5);
           this.router.navigate(['/result']);
           this.error = null;
         } else {
@@ -91,10 +107,16 @@ export class CaptchaComponent {
         break;
     }
   }
-  goBack() {
-    this.challenge -= 1;
+
+  goBack(): void {
+    const target = this.stateService.goBack();
+    if (target !== null) {
+      this.challenge = target;
+      this.error = null;
+    }
   }
-  toggleSelect(img: string) {
+
+  toggleSelect(img: string): void {
     const index = this.selectedImages.indexOf(img);
     if (index === -1) {
       this.selectedImages.push(img);
