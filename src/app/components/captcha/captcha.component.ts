@@ -1,7 +1,7 @@
 import { Component, inject, OnInit } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { Router } from '@angular/router';
-import { StateService } from '../../service/state.service';
+import { StateService } from '../../core/service/state.service';
 
 @Component({
   selector: 'app-captcha',
@@ -41,11 +41,7 @@ export class CaptchaComponent implements OnInit {
   selectedImages: string[] = [];
 
   ngOnInit(): void {
-    this.challenge = this.stateService.getLevel();
-
-    if (this.challenge > 5) {
-      this.router.navigate(['/result']);
-    }
+    let check = this.stateService.checkState();
   }
 
   checkAnswer(answer: string, challenge: number): void {

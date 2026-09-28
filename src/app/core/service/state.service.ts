@@ -1,11 +1,7 @@
 import { Injectable } from '@angular/core';
+import { ChallengeProgress } from '../models/models';
 
-export interface ChallengeProgress {
-  level: number;
-  completedChallenges: number[];
-}
-
-const STORAGE_KEY = 'angul_it_challenge_progress_v1';
+const STORAGE_KEY = 'captchaProgress';
 const MIN_LEVEL = 1;
 const MAX_LEVEL = 5;
 const VALID_CHALLENGE_IDS = [1, 2, 3, 4, 5];
@@ -18,7 +14,7 @@ export class StateService {
     this.state = this.loadState();
   }
 
-  getProgress(): Readonly<ChallengeProgress> {
+  getProgress(): ChallengeProgress {
     return { ...this.state, completedChallenges: [...this.state.completedChallenges] };
   }
 
@@ -30,14 +26,6 @@ export class StateService {
     return [...this.state.completedChallenges];
   }
 
-  isCompleted(challengeId: number): boolean {
-    return this.state.completedChallenges.includes(challengeId);
-  }
-
-  /**
-   * Record a challenge as completed. Only allows completing the current level.
-   * Returns true if the completion was valid and applied.
-   */
   completeChallenge(challengeId: number): boolean {
     if (challengeId !== this.state.level) return false;
     if (!VALID_CHALLENGE_IDS.includes(challengeId)) return false;
@@ -56,10 +44,6 @@ export class StateService {
     return true;
   }
 
-  /**
-   * Navigate back to a previous challenge. Only allows going back to
-   * challenges that have been completed (or the current one).
-   */
   goBack(): number | null {
     if (this.state.level <= MIN_LEVEL) return null;
 
@@ -71,22 +55,16 @@ export class StateService {
     return targetLevel;
   }
 
-  /**
-   * Reset all progress. Used when corrupted state is detected.
-   */
   resetProgress(): void {
     this.state = { level: MIN_LEVEL, completedChallenges: [] };
     this.saveState();
   }
 
-  /**
-   * Check if all challenges are completed.
-   */
   isAllCompleted(): boolean {
     return this.state.completedChallenges.length === MAX_LEVEL;
   }
 
-  private loadState(): ChallengeProgress {
+  public loadState(): ChallengeProgress {
     try {
       const raw = localStorage.getItem(STORAGE_KEY);
       if (!raw) {
@@ -106,8 +84,8 @@ export class StateService {
     }
 
     const obj = raw as Record<string, unknown>;
-    const level = this.sanitizeLevel(obj.level);
-    const completed = this.sanitizeCompleted(obj.completedChallenges, level);
+    const level = this.sanitizeLevel(obj['level']);
+    const completed = this.sanitizeCompleted(obj['completedChallenges'], level);
 
     return { level, completedChallenges: completed };
   }
@@ -141,15 +119,12 @@ export class StateService {
 
     valid.sort((a, b) => a - b);
 
-    // Enforce progression: all challenges before the current level must be completed
     for (let i = MIN_LEVEL; i < level && i <= MAX_LEVEL; i++) {
       if (!seen.has(i)) {
-        // Missing prerequisite — clamp level down to the first missing challenge
         return valid.filter((id) => id < i);
       }
     }
 
-    // Remove any challenge at or above the current level
     const filtered = valid.filter((id) => id < level);
 
     return filtered;
@@ -158,9 +133,55 @@ export class StateService {
   private saveState(): void {
     try {
       localStorage.setItem(STORAGE_KEY, JSON.stringify(this.state));
-    } catch {
-      // localStorage may be unavailable (private mode, quota exceeded)
-      // Progress will be kept in memory only
+    } catch (err) {
+      console.error('Failed to save state to localStorage', err);
     }
+  }
+
+  public checkState(): boolean {
+    try {
+      const raw = localStorage.getItem(STORAGE_KEY);
+      if (!raw) {
+        return false;
+      }
+
+      const parsed = JSON.parse(raw);
+      if (typeof parsed !== 'object' || parsed === null) {
+        return false;
+      }
+      if (!this.checkLevel) {
+        return false;
+      }
+    } catch {
+      return false;
+    }
+  }
+  private checkLevel(value: unknown): boolean {
+    if (typeof value !== 'number' || !Number.isInteger(value)) {
+      return false;
+    }
+    if (value < MIN_LEVEL || value > MAX_LEVEL + 1) {
+      return false;
+    }
+    return true;
+  }
+  private checkCompleted(value: unknown, level: number): boolean {
+    if (!Array.isArray(value)) {
+      return false;
+    }
+
+    if (value.length != level - 1) {
+      return false;
+    }
+    for (const item of value) {
+      if (!Number.isInteger(item)) {
+        return false;
+      }
+      const id = item as number;
+      if (id < MIN_LEVEL || id > MAX_LEVEL) return false;
+    }
+    for (let i:=) {
+    }
+    return true;
   }
 }
