@@ -42,6 +42,17 @@ export class CaptchaComponent implements OnInit {
 
   ngOnInit(): void {
     let check = this.stateService.checkState();
+    if (check) {
+      console.log('good');
+      if (this.stateService.getLevel() == 6) {
+        this.router.navigate(['/result']);
+      }
+      this.challenge = this.stateService.getLevel();
+    } else {
+      console.log('bad');
+      this.challenge = 1;
+      this.stateService.saveState({ level: 1, completedChallenges: [] });
+    }
   }
 
   checkAnswer(answer: string, challenge: number): void {

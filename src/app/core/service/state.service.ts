@@ -11,19 +11,24 @@ export class StateService {
   private state: ChallengeProgress;
 
   constructor() {
-    this.state = this.loadState();
+    this.state = this.getState();
   }
+  getState(): ChallengeProgress {
+    try {
+      const raw = localStorage.getItem(STORAGE_KEY);
+      if (!raw) {
+        return { level: MIN_LEVEL, completedChallenges: [] };
+      }
 
-  getProgress(): ChallengeProgress {
-    return { ...this.state, completedChallenges: [...this.state.completedChallenges] };
+      const parsed = JSON.parse(raw);
+      return { level: parsed.level, completedChallenges: parsed.completedChallenges };
+    } catch {
+      return { level: MIN_LEVEL, completedChallenges: [] };
+    }
   }
 
   getLevel(): number {
     return this.state.level;
-  }
-
-  getCompletedChallenges(): number[] {
-    return [...this.state.completedChallenges];
   }
 
   completeChallenge(challengeId: number): boolean {
@@ -40,7 +45,7 @@ export class StateService {
       this.state.level = challengeId + 1;
     }
 
-    this.saveState();
+    this.saveState(this.state);
     return true;
   }
 
@@ -51,88 +56,26 @@ export class StateService {
     if (!this.state.completedChallenges.includes(targetLevel)) return null;
 
     this.state.level = targetLevel;
-    this.saveState();
+    this.state.completedChallenges = this.state.completedChallenges.filter(
+      (id) => id < targetLevel,
+    );
+    this.saveState(this.state);
     return targetLevel;
   }
 
   resetProgress(): void {
     this.state = { level: MIN_LEVEL, completedChallenges: [] };
-    this.saveState();
+    this.saveState(this.state);
   }
 
   isAllCompleted(): boolean {
-    return this.state.completedChallenges.length === MAX_LEVEL;
+    return this.checkState() && this.state.level == MAX_LEVEL + 1;
   }
 
-  public loadState(): ChallengeProgress {
+  public saveState(state?: ChallengeProgress): void {
+    const stateToSave = state || this.state;
     try {
-      const raw = localStorage.getItem(STORAGE_KEY);
-      if (!raw) {
-        return { level: MIN_LEVEL, completedChallenges: [] };
-      }
-
-      const parsed = JSON.parse(raw);
-      return this.sanitizeState(parsed);
-    } catch {
-      return { level: MIN_LEVEL, completedChallenges: [] };
-    }
-  }
-
-  private sanitizeState(raw: unknown): ChallengeProgress {
-    if (typeof raw !== 'object' || raw === null) {
-      return { level: MIN_LEVEL, completedChallenges: [] };
-    }
-
-    const obj = raw as Record<string, unknown>;
-    const level = this.sanitizeLevel(obj['level']);
-    const completed = this.sanitizeCompleted(obj['completedChallenges'], level);
-
-    return { level, completedChallenges: completed };
-  }
-
-  private sanitizeLevel(value: unknown): number {
-    if (typeof value !== 'number' || !Number.isInteger(value)) {
-      return MIN_LEVEL;
-    }
-    if (value < MIN_LEVEL || value > MAX_LEVEL + 1) {
-      return MIN_LEVEL;
-    }
-    return value;
-  }
-
-  private sanitizeCompleted(value: unknown, level: number): number[] {
-    if (!Array.isArray(value)) {
-      return [];
-    }
-
-    const valid: number[] = [];
-    const seen = new Set<number>();
-
-    for (const item of value) {
-      if (!Number.isInteger(item)) continue;
-      const id = item as number;
-      if (id < MIN_LEVEL || id > MAX_LEVEL) continue;
-      if (seen.has(id)) continue;
-      seen.add(id);
-      valid.push(id);
-    }
-
-    valid.sort((a, b) => a - b);
-
-    for (let i = MIN_LEVEL; i < level && i <= MAX_LEVEL; i++) {
-      if (!seen.has(i)) {
-        return valid.filter((id) => id < i);
-      }
-    }
-
-    const filtered = valid.filter((id) => id < level);
-
-    return filtered;
-  }
-
-  private saveState(): void {
-    try {
-      localStorage.setItem(STORAGE_KEY, JSON.stringify(this.state));
+      localStorage.setItem(STORAGE_KEY, JSON.stringify(stateToSave));
     } catch (err) {
       console.error('Failed to save state to localStorage', err);
     }
@@ -149,12 +92,16 @@ export class StateService {
       if (typeof parsed !== 'object' || parsed === null) {
         return false;
       }
-      if (!this.checkLevel) {
+      if (
+        !this.checkLevel(parsed.level) ||
+        !this.checkCompleted(parsed.completedChallenges, parsed.level)
+      ) {
         return false;
       }
     } catch {
       return false;
     }
+    return true;
   }
   private checkLevel(value: unknown): boolean {
     if (typeof value !== 'number' || !Number.isInteger(value)) {
@@ -170,18 +117,36 @@ export class StateService {
       return false;
     }
 
-    if (value.length != level - 1) {
+    if (value.length !== level - 1) {
       return false;
     }
+    value.sort((a, b) => a - b);
     for (const item of value) {
       if (!Number.isInteger(item)) {
         return false;
       }
+      if (!VALID_CHALLENGE_IDS.includes(item)) return false;
+
       const id = item as number;
-      if (id < MIN_LEVEL || id > MAX_LEVEL) return false;
+
+      if (id < MIN_LEVEL || id > MAX_LEVEL) {
+        return false;
+      }
     }
-    for (let i:=) {
+
+    for (let i = 0; i < value.length; i++) {
+      if (value[i] !== i + 1) {
+        return false;
+      }
     }
+
     return true;
+  }
+  removeState(): void {
+    try {
+      localStorage.removeItem(STORAGE_KEY);
+    } catch (err) {
+      console.error('Failed to remove state from localStorage', err);
+    }
   }
 }
