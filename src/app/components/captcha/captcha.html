@@ -10,7 +10,7 @@
     </div>
     <p class="title">challenge 1</p>
     <p class="question">What is the result of this math operation : <span>{{challengeN1}}</span></p>
-    <input type="text" name="answer" title="answer" placeholder="put your result here" #answer>
+    <input type="text" name="answer" title="answer" placeholder="put your result here" [(ngModel)]="currentAnswer" #answer>
     @if(error){
     <p class="error">{{error}}</p>
     }
@@ -29,7 +29,7 @@
     </div>
     <p class="title">challenge 2</p>
     <p class="question">Answer this question : <span>{{challengeN2}}</span></p>
-    <input type="text" name="answer" title="answer" placeholder="put your result here" #answer>
+    <input type="text" name="answer" title="answer" placeholder="put your result here" [(ngModel)]="currentAnswer" #answer>
     @if(error){
     <p class="error">{{error}}</p>
     }
@@ -49,7 +49,7 @@
     </div>
     <p class="title">challenge 3</p>
     <p class="question">Answer this question : <span>{{challengeN3}}</span></p>
-    <input type="text" name="answer" title="answer" placeholder="put your result here" #answer>
+    <input type="text" name="answer" title="answer" placeholder="put your result here" [(ngModel)]="currentAnswer" #answer>
     @if(error){
     <p class="error">{{error}}</p>
     }

@@ -32,29 +32,30 @@ export class StateService {
   completeChallenge(challengeId: number): boolean {
     if (challengeId !== this.state.level) return false;
     if (!VALID_CHALLENGE_IDS.includes(challengeId)) return false;
-    if (this.state.completedChallenges.includes(challengeId)) return false;
+    if (!this.state.completedChallenges.includes(challengeId)) {
+      this.state.completedChallenges.push(challengeId);
+    }
 
-    this.state.completedChallenges.push(challengeId);
     this.state.completedChallenges.sort((a, b) => a - b);
 
     this.state.level = challengeId + 1;
-
     this.saveState(this.state);
+    console.log('State saved to localStorage: after saving', this.state);
     return true;
   }
 
   goBack(): number | null {
-    if (this.state.level <= MIN_LEVEL) return null;
+    if (this.state.level <= MIN_LEVEL) {
+      return null;
+    }
 
-    const targetLevel = this.state.level - 1;
-    if (!this.state.completedChallenges.includes(targetLevel)) return null;
-
-    this.state.level = targetLevel;
-    this.state.completedChallenges = this.state.completedChallenges.filter(
-      (id) => id < targetLevel,
-    );
+    this.state.level = this.state.level - 1;
     this.saveState(this.state);
-    return targetLevel;
+    return this.state.level;
+  }
+
+  isChallengeCompleted(challengeId: number): boolean {
+    return this.state.completedChallenges.includes(challengeId);
   }
 
   resetProgress(): void {
@@ -137,5 +138,8 @@ export class StateService {
     } catch (err) {
       console.error('Failed to remove state from localStorage', err);
     }
+  }
+  getLevel(): number {
+    return this.state.level;
   }
 }

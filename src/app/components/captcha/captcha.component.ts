@@ -16,6 +16,7 @@ export class CaptchaComponent implements OnInit {
 
   error: string | null = null;
   challenge: number = 1;
+  currentAnswer: string = '';
   challengeN1 = '(15×8)−(5²×2)+√400';
   challengeN2 = 'Which country won the 2018 FIFA World Cup ?';
   challengeN3 = 'Which card means a player is sent off ?';
@@ -44,10 +45,10 @@ export class CaptchaComponent implements OnInit {
   ngOnInit(): void {
     let check = this.stateService.checkState();
     if (check) {
-      if (this.stateService.getState().level == 6) {
+      if (this.stateService.getLevel() == 6) {
         this.router.navigate(['/result']);
       }
-      this.challenge = this.stateService.getState().level;
+      this.challenge = this.stateService.getLevel();
     } else {
       this.challenge = 1;
       this.stateService.saveState(INITIAL_STATE);
@@ -62,6 +63,7 @@ export class CaptchaComponent implements OnInit {
           this.stateService.completeChallenge(1);
           this.challenge = 2;
           this.error = null;
+          this.populateAnswer(2);
         } else {
           this.error = 'Incorrect answer. Please try again.';
         }
@@ -71,6 +73,7 @@ export class CaptchaComponent implements OnInit {
           this.stateService.completeChallenge(2);
           this.challenge = 3;
           this.error = null;
+          this.populateAnswer(3);
         } else {
           this.error = 'Incorrect answer. Please try again.';
         }
@@ -80,6 +83,7 @@ export class CaptchaComponent implements OnInit {
           this.stateService.completeChallenge(3);
           this.challenge = 4;
           this.error = null;
+          this.populateAnswer(4);
         } else {
           this.error = 'Incorrect answer. Please try again.';
         }
@@ -93,6 +97,7 @@ export class CaptchaComponent implements OnInit {
           this.challenge = 5;
           this.error = null;
           this.selectedImages = [];
+          this.populateAnswer(5);
         } else {
           this.error = 'Incorrect answer. Please try again.';
         }
@@ -117,11 +122,45 @@ export class CaptchaComponent implements OnInit {
   }
 
   goBack(): void {
+    console.log('Going back from challenge', this.challenge);
     const target = this.stateService.goBack();
     if (target !== null) {
       this.challenge = target;
       this.error = null;
       this.selectedImages = [];
+      this.currentAnswer = '';
+      this.populateAnswer(target);
+    }
+  }
+
+  populateAnswer(challengeId: number): void {
+    if (!this.stateService.isChallengeCompleted(challengeId)) {
+      this.currentAnswer = '';
+      return;
+    }
+
+    switch (challengeId) {
+      case 1:
+        this.currentAnswer = '90';
+        break;
+      case 2:
+        this.currentAnswer = 'france';
+        break;
+      case 3:
+        this.currentAnswer = 'red';
+        break;
+      case 4:
+        this.selectedImages = ['../../assets/challenge4/messi7.png'];
+        break;
+      case 5:
+        this.selectedImages = [
+          '../../assets/challenge5/cat3.png',
+          '../../assets/challenge5/cat6.png',
+          '../../assets/challenge5/cat7.png',
+        ];
+        break;
+      default:
+        break;
     }
   }
 
