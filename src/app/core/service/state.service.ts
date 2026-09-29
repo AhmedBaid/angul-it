@@ -1,10 +1,12 @@
 import { Injectable } from '@angular/core';
 import { ChallengeProgress } from '../models/models';
-
-const STORAGE_KEY = 'captchaProgress';
-const MIN_LEVEL = 1;
-const MAX_LEVEL = 5;
-const VALID_CHALLENGE_IDS = [1, 2, 3, 4, 5];
+import {
+  INITIAL_STATE,
+  MAX_LEVEL,
+  MIN_LEVEL,
+  STORAGE_KEY,
+  VALID_CHALLENGE_IDS,
+} from '../constant/constant';
 
 @Injectable({ providedIn: 'root' })
 export class StateService {
@@ -17,13 +19,13 @@ export class StateService {
     try {
       const raw = localStorage.getItem(STORAGE_KEY);
       if (!raw) {
-        return { level: MIN_LEVEL, completedChallenges: [] };
+        return INITIAL_STATE;
       }
 
       const parsed = JSON.parse(raw);
       return { level: parsed.level, completedChallenges: parsed.completedChallenges };
     } catch {
-      return { level: MIN_LEVEL, completedChallenges: [] };
+      return INITIAL_STATE;
     }
   }
 
@@ -39,11 +41,7 @@ export class StateService {
     this.state.completedChallenges.push(challengeId);
     this.state.completedChallenges.sort((a, b) => a - b);
 
-    if (challengeId >= MAX_LEVEL) {
-      this.state.level = MAX_LEVEL + 1;
-    } else {
-      this.state.level = challengeId + 1;
-    }
+    this.state.level = challengeId + 1;
 
     this.saveState(this.state);
     return true;
@@ -64,7 +62,7 @@ export class StateService {
   }
 
   resetProgress(): void {
-    this.state = { level: MIN_LEVEL, completedChallenges: [] };
+    this.state = INITIAL_STATE;
     this.saveState(this.state);
   }
 
@@ -72,10 +70,9 @@ export class StateService {
     return this.checkState() && this.state.level == MAX_LEVEL + 1;
   }
 
-  public saveState(state?: ChallengeProgress): void {
-    const stateToSave = state || this.state;
+  public saveState(state: ChallengeProgress): void {
     try {
-      localStorage.setItem(STORAGE_KEY, JSON.stringify(stateToSave));
+      localStorage.setItem(STORAGE_KEY, JSON.stringify(state));
     } catch (err) {
       console.error('Failed to save state to localStorage', err);
     }
@@ -126,12 +123,6 @@ export class StateService {
         return false;
       }
       if (!VALID_CHALLENGE_IDS.includes(item)) return false;
-
-      const id = item as number;
-
-      if (id < MIN_LEVEL || id > MAX_LEVEL) {
-        return false;
-      }
     }
 
     for (let i = 0; i < value.length; i++) {
@@ -144,6 +135,7 @@ export class StateService {
   }
   removeState(): void {
     try {
+      console.log('Removing state from localStorage');
       localStorage.removeItem(STORAGE_KEY);
     } catch (err) {
       console.error('Failed to remove state from localStorage', err);

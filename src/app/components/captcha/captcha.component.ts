@@ -2,6 +2,7 @@ import { Component, inject, OnInit } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { Router } from '@angular/router';
 import { StateService } from '../../core/service/state.service';
+import { INITIAL_STATE } from '../../core/constant/constant';
 
 @Component({
   selector: 'app-captcha',
@@ -51,7 +52,7 @@ export class CaptchaComponent implements OnInit {
     } else {
       console.log('bad');
       this.challenge = 1;
-      this.stateService.saveState({ level: 1, completedChallenges: [] });
+      this.stateService.saveState(INITIAL_STATE);
     }
   }
 
@@ -59,7 +60,7 @@ export class CaptchaComponent implements OnInit {
     switch (challenge) {
       case 1:
         let answer1: number = parseInt(answer.trim());
-        if (answer1 === 100) {
+        if (answer1 === 90) {
           this.stateService.completeChallenge(1);
           this.challenge = 2;
           this.error = null;
@@ -120,6 +121,7 @@ export class CaptchaComponent implements OnInit {
     if (target !== null) {
       this.challenge = target;
       this.error = null;
+      this.selectedImages = [];
     }
   }
 

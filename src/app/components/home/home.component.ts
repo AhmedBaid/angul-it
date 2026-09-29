@@ -1,6 +1,7 @@
 import { Component, inject } from '@angular/core';
 import { Router } from '@angular/router';
 import { StateService } from '../../core/service/state.service';
+import { INITIAL_STATE } from '../../core/constant/constant';
 
 @Component({
   selector: 'app-home',
@@ -14,7 +15,7 @@ export class HomeComponent {
     this.StateService.removeState();
   }
   goToCaptcha() {
-    this.router.navigate(['captcha']);
-    this.StateService.saveState({ level: 1, completedChallenges: [] });
+    this.router.navigate(['/captcha']);
+    this.StateService.saveState(INITIAL_STATE);
   }
 }

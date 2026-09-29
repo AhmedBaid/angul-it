@@ -10,5 +10,5 @@ export const resultGuard: CanActivateFn = (route, state) => {
     return true;
   }
 
-  return router.createUrlTree(['/captcha']);
+  return router.navigate(['/captcha']);
 };

@@ -195,7 +195,6 @@
   .start-btn:hover {
     background: var(--green);
     box-shadow: 0 10px 26px rgba(0, 0, 0, 0.35);
-    transform: translateY(-3px);
   }
 
   .start-btn:hover .arrow {
