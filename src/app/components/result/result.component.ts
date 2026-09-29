@@ -12,7 +12,7 @@ export class ResultComponent {
   router = inject(Router);
   stateService = inject(StateService);
   retryChallenge() {
-    this.stateService.removeState();
+    this.stateService.saveState(INITIAL_STATE);
     this.router.navigate(['/captcha']);
   }
 }

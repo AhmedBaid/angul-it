@@ -15,7 +15,7 @@ export class HomeComponent {
     this.StateService.removeState();
   }
   goToCaptcha() {
-    this.router.navigate(['/captcha']);
     this.StateService.saveState(INITIAL_STATE);
+    this.router.navigate(['/captcha']);
   }
 }

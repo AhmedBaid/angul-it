@@ -67,6 +67,7 @@ export class StateService {
   }
 
   public saveState(stateToSave: ChallengeProgress): void {
+    this.state = stateToSave;
     try {
       localStorage.setItem(STORAGE_KEY, JSON.stringify(stateToSave));
     } catch (err) {
@@ -91,6 +92,7 @@ export class StateService {
       ) {
         return false;
       }
+      this.state = parsed as ChallengeProgress;
     } catch {
       return false;
     }
