@@ -29,10 +29,6 @@ export class StateService {
     }
   }
 
-  getLevel(): number {
-    return this.state.level;
-  }
-
   completeChallenge(challengeId: number): boolean {
     if (challengeId !== this.state.level) return false;
     if (!VALID_CHALLENGE_IDS.includes(challengeId)) return false;
@@ -70,9 +66,9 @@ export class StateService {
     return this.checkState() && this.state.level == MAX_LEVEL + 1;
   }
 
-  public saveState(state: ChallengeProgress): void {
+  public saveState(stateToSave: ChallengeProgress): void {
     try {
-      localStorage.setItem(STORAGE_KEY, JSON.stringify(state));
+      localStorage.setItem(STORAGE_KEY, JSON.stringify(stateToSave));
     } catch (err) {
       console.error('Failed to save state to localStorage', err);
     }
@@ -135,7 +131,6 @@ export class StateService {
   }
   removeState(): void {
     try {
-      console.log('Removing state from localStorage');
       localStorage.removeItem(STORAGE_KEY);
     } catch (err) {
       console.error('Failed to remove state from localStorage', err);

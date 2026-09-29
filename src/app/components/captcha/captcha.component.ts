@@ -44,13 +44,11 @@ export class CaptchaComponent implements OnInit {
   ngOnInit(): void {
     let check = this.stateService.checkState();
     if (check) {
-      console.log('good');
-      if (this.stateService.getLevel() == 6) {
+      if (this.stateService.getState().level == 6) {
         this.router.navigate(['/result']);
       }
-      this.challenge = this.stateService.getLevel();
+      this.challenge = this.stateService.getState().level;
     } else {
-      console.log('bad');
       this.challenge = 1;
       this.stateService.saveState(INITIAL_STATE);
     }
@@ -94,6 +92,7 @@ export class CaptchaComponent implements OnInit {
           this.stateService.completeChallenge(4);
           this.challenge = 5;
           this.error = null;
+          this.selectedImages = [];
         } else {
           this.error = 'Incorrect answer. Please try again.';
         }
@@ -102,7 +101,8 @@ export class CaptchaComponent implements OnInit {
         if (
           this.selectedImages.includes('../../assets/challenge5/cat3.png') &&
           this.selectedImages.includes('../../assets/challenge5/cat6.png') &&
-          this.selectedImages.includes('../../assets/challenge5/cat7.png')
+          this.selectedImages.includes('../../assets/challenge5/cat7.png') &&
+          this.selectedImages.length === 3
         ) {
           this.stateService.completeChallenge(5);
           this.router.navigate(['/result']);

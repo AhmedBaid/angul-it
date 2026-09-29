@@ -1,6 +1,7 @@
 import { Component, inject } from '@angular/core';
 import { Router } from '@angular/router';
 import { StateService } from '../../core/service/state.service';
+import { INITIAL_STATE } from '../../core/constant/constant';
 
 @Component({
   selector: 'app-result',
@@ -11,7 +12,7 @@ export class ResultComponent {
   router = inject(Router);
   stateService = inject(StateService);
   retryChallenge() {
-    this.router.navigate(['/captcha']);
     this.stateService.removeState();
+    this.router.navigate(['/captcha']);
   }
 }
