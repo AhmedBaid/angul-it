@@ -122,7 +122,6 @@ export class CaptchaComponent implements OnInit {
   }
 
   goBack(): void {
-    console.log('Going back from challenge', this.challenge);
     const target = this.stateService.goBack();
     if (target !== null) {
       this.challenge = target;

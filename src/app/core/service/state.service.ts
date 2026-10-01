@@ -40,7 +40,6 @@ export class StateService {
 
     this.state.level = challengeId + 1;
     this.saveState(this.state);
-    console.log('State saved to localStorage: after saving', this.state);
     return true;
   }
 
